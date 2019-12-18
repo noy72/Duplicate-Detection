@@ -1,12 +1,8 @@
 import unittest
-import uuid
 
 from definition import TABLES
 from src.database.Database import Database
-
-
-def uid():
-    return str(uuid.uuid1())
+from src.util.string import uid
 
 
 class TestDatabaseMethods(unittest.TestCase):
