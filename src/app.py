@@ -2,8 +2,9 @@ import json
 
 from bottle import template, run, request, Bottle, TEMPLATE_PATH, response
 
-from src.database.Database import Database
-from src.definition import TABLES, ROOT
+from database.Database import Database
+from definition import TABLES, ROOT
+
 
 app = Bottle()
 
