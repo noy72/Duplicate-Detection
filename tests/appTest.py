@@ -11,20 +11,13 @@ class TestAppMethods(unittest.TestCase):
     def setUp(self):
         self.app = TestApp(app)
 
-    def exist(self, html, tag):
-        self.assertNotEqual(-1, html.find(tag))
-
-    def notExist(self, html, tag):
-        self.assertEqual(-1, html.find(tag))
-
     def test_get_index(self):
         resp = self.app.get('/')
         self.assertEqual('200 OK', resp.status)
 
-        html = resp.unicode_normal_body
-        self.exist(html, '<button>submit</button>')
-        self.notExist(html, '<h2>Duplicated!!!</h2>')
-        self.notExist(html, '<h2>Saved</h2>')
+        resp.mustcontain('<button>submit</button>')
+        resp.mustcontain(no='<h2>Duplicated!!!</h2>')
+        resp.mustcontain(no='<h2>Saved</h2>')
 
     def test_post_index(self):
         data = uid()
@@ -35,16 +28,14 @@ class TestAppMethods(unittest.TestCase):
             resp = form.submit()
 
             self.assertEqual('200 OK', resp.status)
-
-            html = resp.body.decode()
-            self.exist(html, '<button>submit</button>')
+            resp.mustcontain('<button>submit</button>')
 
             if status == 'save':
-                self.notExist(html, '<h2>Duplicated!!!</h2>')
-                self.exist(html, '<h2>Saved</h2>')
+                resp.mustcontain('<h2>Saved</h2>')
+                resp.mustcontain(no='<h2>Duplicated!!!</h2>')
             else:
-                self.notExist(html, '<h2>Saved</h2>')
-                self.exist(html, '<h2>Duplicated!!!</h2>')
+                resp.mustcontain(no='<h2>Saved</h2>')
+                resp.mustcontain('<h2>Duplicated!!!</h2>')
 
     def test_allow_origin(self):
         resp = self.app.get('/')
