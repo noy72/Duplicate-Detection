@@ -15,23 +15,23 @@ class Database:
 
     def save(self, data):
         conn, c = self._connect_db()
-        c.execute(f'INSERT INTO {self.table_name} VALUES(?);', (data,))
-        conn.commit()
-        conn.close()
+        try:
+            c.execute(f'INSERT INTO {self.table_name} VALUES(?);', (data,))
+        except sqlite3.IntegrityError:
+            conn.close()
+            return False
+        else:
+            conn.commit()
+            conn.close()
+            return True
 
     def exist(self, data):
-        conn, c = self._connect_db()
-        res = c.execute(f'SELECT EXISTS (select * from {self.table_name} where data=?);', (data,)).fetchone()
-        conn.close()
-        return res[0]
-
-    def check_ids(self, data):
         conn, c = self._connect_db()
 
         results = []
         for d in data:
-            res = c.execute(f'SELECT * FROM {self.table_name} WHERE data=?;', (d,)).fetchone()
-            results.append(res is not None)
+            res = c.execute(f'SELECT EXISTS (select * from {self.table_name} where data=?);', (d,)).fetchone()
+            results.append(res[0])
         conn.close()
 
         return results
