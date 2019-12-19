@@ -18,8 +18,8 @@ class TestDatabaseMethods(unittest.TestCase):
     def test_check(self):
         data = uid()
         self.db.save(data)
-        self.assertTrue(self.db.check(data))
-        self.assertFalse(self.db.check(uid()))
+        self.assertTrue(self.db.exist(data))
+        self.assertFalse(self.db.exist(uid()))
 
     def test_check_ids(self):
         data = [uid(), uid(), uid()]

@@ -19,11 +19,11 @@ class Database:
         conn.commit()
         conn.close()
 
-    def check(self, data):
+    def exist(self, data):
         conn, c = self._connect_db()
-        res = c.execute(f'SELECT * FROM {self.table_name} WHERE data=?;', (data,)).fetchone()
+        res = c.execute(f'SELECT EXISTS (select * from {self.table_name} where data=?);', (data,)).fetchone()
         conn.close()
-        return res is not None
+        return res[0]
 
     def check_ids(self, data):
         conn, c = self._connect_db()
