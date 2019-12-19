@@ -1,15 +1,28 @@
-import bottle
-from bottle import template, run
+from bottle import template, run, request, Bottle, TEMPLATE_PATH
 
-from definition import ROOT
+from src.database.Database import Database
+from src.definition import TABLES, ROOT
 
-bottle.TEMPLATE_PATH.append(f"{ROOT}/src/views")
+app = Bottle()
+
+TEMPLATE_PATH.append(f"{ROOT}/views")
+
+if __name__ == '__main__':
+    db = Database(TABLES.rj)
+else:
+    db = Database(TABLES.test)
 
 
-@bottle.route("/")
+@app.get("/")
 def index():
-    return template("index.tpl.html", isDuplicated=-1)
+    return template("index.tpl.html", saved=-1)
+
+
+@app.post("/", method="POST")
+def index_post():
+    data = request.forms.get("data")
+    return template("index.tpl.html", saved=db.save(data))
 
 
 if __name__ == '__main__':
-    run(host="0.0.0.0", port=10070, debug=True)
+    run(app, host="localhost", port=10070, debug=True, reloader=True)

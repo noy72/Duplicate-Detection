@@ -1,11 +1,11 @@
 % rebase('layout.tpl.html')
 
-<form method="post">
+<form action="/" method="post">
     <input type="text" name="data">
     <button>submit</button>
 </form>
 
-% if isDuplicated == 1:
-    <h2>Duplicated!!!</h2>
-% elif isDuplicated == 0:
+% if saved == 1:
     <h2>Saved</h2>
+% elif saved == 0:
+    <h2>Duplicated!!!</h2>
