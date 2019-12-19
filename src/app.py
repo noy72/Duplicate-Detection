@@ -1,3 +1,5 @@
+import json
+
 from bottle import template, run, request, Bottle, TEMPLATE_PATH, response
 
 from src.database.Database import Database
@@ -22,6 +24,17 @@ def index():
 def index_post():
     data = request.forms.get("data")
     return template("index.tpl.html", saved=db.save(data))
+
+
+@app.route("/api/exist", method="POST")
+def api_exist():
+    req = request.json
+    if req is None:
+        return {}
+
+    body = json.dumps({"data": db.exist(req["data"])})
+    response.headers['Content-Type'] = 'application/json'
+    return body
 
 
 @app.hook('after_request')

@@ -1,3 +1,4 @@
+import json
 import unittest
 
 from webtest import TestApp
@@ -53,6 +54,27 @@ class TestAppMethods(unittest.TestCase):
         resp = self.app.options('/')
         self.assertEqual('200 OK', resp.status)
         self.assertEqual({}, resp.json)
+
+    def test_api_exist(self):
+        data = [uid(), uid(), uid()]
+
+        form = self.app.get('/').form
+        form['data'] = data[0]
+        resp = form.submit()
+        self.assertEqual('200 OK', resp.status)
+
+        form['data'] = data[2]
+        resp = form.submit()
+        self.assertEqual('200 OK', resp.status)
+
+        resp = self.app.post(
+            '/api/exist',
+            content_type='application/json',
+            params=json.dumps({
+                'data': data
+            })
+        )
+        self.assertEqual({'data': [1, 0, 1]}, resp.json)
 
 
 if __name__ == '__main__':
