@@ -1,6 +1,5 @@
 import unittest
 
-from definition import TABLES
 from src.database.Database import Database
 from src.util.string import uid
 
@@ -8,7 +7,7 @@ from src.util.string import uid
 class TestDatabaseMethods(unittest.TestCase):
 
     def setUp(self):
-        self.db = Database(TABLES.test)
+        self.db = Database('test')
 
     def tearDown(self):
         self.db.delete()
