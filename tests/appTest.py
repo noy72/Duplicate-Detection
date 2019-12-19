@@ -20,7 +20,7 @@ class TestAppMethods(unittest.TestCase):
         resp = self.app.get('/')
         self.assertEqual('200 OK', resp.status)
 
-        html = resp.body.decode()
+        html = resp.unicode_normal_body
         self.exist(html, '<button>submit</button>')
         self.notExist(html, '<h2>Duplicated!!!</h2>')
         self.notExist(html, '<h2>Saved</h2>')
@@ -44,6 +44,15 @@ class TestAppMethods(unittest.TestCase):
             else:
                 self.notExist(html, '<h2>Saved</h2>')
                 self.exist(html, '<h2>Duplicated!!!</h2>')
+
+    def test_allow_origin(self):
+        resp = self.app.get('/')
+        self.assertEqual(('Access-Control-Allow-Origin', '*'), resp.headerlist[0])
+
+    def test_options(self):
+        resp = self.app.options('/')
+        self.assertEqual('200 OK', resp.status)
+        self.assertEqual({}, resp.json)
 
 
 if __name__ == '__main__':
