@@ -19,7 +19,7 @@ class TestAppMethods(unittest.TestCase):
         resp.mustcontain(no='<h2>Duplicated!!!</h2>')
         resp.mustcontain(no='<h2>Saved</h2>')
 
-    def test_post_index(self):
+    def test_post_data_to_index(self):
         data = uid()
         for status in ['save', 'duplicated']:
             form = self.app.get('/').form
@@ -37,16 +37,16 @@ class TestAppMethods(unittest.TestCase):
                 resp.mustcontain(no='<h2>Saved</h2>')
                 resp.mustcontain('<h2>Duplicated!!!</h2>')
 
-    def test_allow_origin(self):
+    def test_add_allow_origin(self):
         resp = self.app.get('/')
         self.assertEqual(('Access-Control-Allow-Origin', '*'), resp.headerlist[0])
 
-    def test_options(self):
+    def test_options_work(self):
         resp = self.app.options('/')
         self.assertEqual('200 OK', resp.status)
         self.assertEqual({}, resp.json)
 
-    def test_api_exist(self):
+    def test_api_exist_work(self):
         data = [uid(), uid(), uid()]
 
         form = self.app.get('/').form
