@@ -1,6 +1,6 @@
 import sqlite3
 
-from definition import ROOT
+from src.definition import ROOT
 
 
 class Database:
