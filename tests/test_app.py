@@ -41,6 +41,15 @@ class TestAppMethods(unittest.TestCase):
         resp = self.app.get('/')
         self.assertEqual(('Access-Control-Allow-Origin', '*'), resp.headerlist[0])
 
+        resp = self.app.post(
+            '/api/exist',
+            content_type='application/json',
+            params=json.dumps({
+                'data': ['a', 'b']
+            })
+        )
+        self.assertEqual(('Access-Control-Allow-Origin', '*'), resp.headerlist[1])
+
     def test_options_work(self):
         resp = self.app.options('/')
         self.assertEqual('200 OK', resp.status)
