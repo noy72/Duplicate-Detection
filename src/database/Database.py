@@ -15,6 +15,7 @@ class Database:
 
     def save(self, data):
         conn, c = self._connect_db()
+        data = data.strip()
         try:
             c.execute(f'INSERT INTO {self.table_name} VALUES(?);', (data,))
         except sqlite3.IntegrityError:

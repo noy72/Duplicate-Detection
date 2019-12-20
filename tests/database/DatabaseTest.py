@@ -17,6 +17,11 @@ class TestDatabaseMethods(unittest.TestCase):
         self.assertTrue(self.db.save(data))
         self.assertFalse(self.db.save(data))
 
+    def test_save_with_space(self):
+        data = "asd d sfa f"
+        self.assertTrue(self.db.save(' ' + data + '   '))
+        self.assertFalse(self.db.save(data))
+
     def test_exist(self):
         data = [uid(), uid(), uid()]
         self.db.save(data[0])
