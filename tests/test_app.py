@@ -4,7 +4,7 @@ import unittest
 from webtest import TestApp
 
 from src.app import app
-from src.database.Database import Database
+from src.database.sqlite3 import Database
 from src.definition import TABLES
 from src.util.string import uid
 

@@ -47,7 +47,6 @@ class Database:
 
         results = []
         for d in data:
-            print(d)
             res = c.execute(f'SELECT EXISTS (select * from {self.table_name} where data like ?);',
                             (f'%{d}%',)).fetchone()
             results.append(res[0])

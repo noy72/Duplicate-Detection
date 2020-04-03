@@ -1,6 +1,6 @@
 import unittest
 
-from src.database.Database import Database
+from src.database.sqlite3 import Database
 from src.util.string import uid
 
 

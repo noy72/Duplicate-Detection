@@ -5,7 +5,7 @@ import sys
 from bottle import template, run, request, Bottle, TEMPLATE_PATH, response
 
 sys.path.insert(0, os.path.abspath("./"))
-from src.database.Database import Database
+from src.database.sqlite3 import Database
 from src.definition import TABLES, ROOT
 
 app = Bottle()
