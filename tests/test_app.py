@@ -76,6 +76,23 @@ class TestAppMethods(unittest.TestCase):
         )
         self.assertEqual({'data': [1, 0, 1]}, resp.json)
 
+    def test_api_exist_substring(self):
+        data = ['1234', '123']
+
+        form = self.app.get('/').form
+        form['data'] = data[0]
+        resp = form.submit()
+        self.assertEqual('200 OK', resp.status)
+
+        resp = self.app.post(
+            '/api/exist',
+            content_type='application/json',
+            params=json.dumps({
+                'data': data
+            })
+        )
+        self.assertEqual({'data': [1, 1]}, resp.json)
+
 
 if __name__ == '__main__':
     unittest.main()

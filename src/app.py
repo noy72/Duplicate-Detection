@@ -4,7 +4,7 @@ import sys
 
 from bottle import template, run, request, Bottle, TEMPLATE_PATH, response
 
-sys.path.insert(0, os.path.abspath('./'))
+sys.path.insert(0, os.path.abspath("./"))
 from src.database.Database import Database
 from src.definition import TABLES, ROOT
 
@@ -12,8 +12,8 @@ app = Bottle()
 
 TEMPLATE_PATH.append(f"{ROOT}/views")
 
-if __name__ == '__main__':
-    db = Database(TABLES.rj)
+if __name__ == "__main__":
+    db = Database(TABLES.production)
 else:
     db = Database(TABLES.test)
 
@@ -36,22 +36,23 @@ def api_exist():
         return {}
 
     body = json.dumps({"data": db.exist(req["data"])})
-    response.headers['Content-Type'] = 'application/json'
+    response.headers["Content-Type"] = "application/json"
     return body
 
 
-@app.hook('after_request')
+@app.hook("after_request")
 def enable_cors():
-    response.headers['Access-Control-Allow-Origin'] = '*'
-    response.headers['Access-Control-Allow-Methods'] = 'GET, POST'
+    response.headers["Access-Control-Allow-Origin"] = "*"
+    response.headers["Access-Control-Allow-Methods"] = "GET, POST"
     response.headers[
-        'Access-Control-Allow-Headers'] = 'Origin, Accept, Content-Type, X-Requested-With, X-CSRF-Token'
+        "Access-Control-Allow-Headers"
+    ] = "Origin, Accept, Content-Type, X-Requested-With, X-CSRF-Token"
 
 
-@app.route('<any:path>', method='OPTIONS')
+@app.route("<any:path>", method="OPTIONS")
 def response_for_options(**kwargs):
     return {}
 
 
-if __name__ == '__main__':
-    run(app, host="localhost", port=10070, debug=True, reloader=True)
+if __name__ == "__main__":
+    run(app, host="0.0.0.0", port=10070)

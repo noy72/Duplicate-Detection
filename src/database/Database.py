@@ -31,7 +31,7 @@ class Database:
 
         results = []
         for d in data:
-            res = c.execute(f'SELECT EXISTS (select * from {self.table_name} where data=?);', (d,)).fetchone()
+            res = c.execute(f'SELECT EXISTS (select * from {self.table_name} where data like ?);', (f'%{d}%',)).fetchone()
             results.append(res[0])
         conn.close()
 
