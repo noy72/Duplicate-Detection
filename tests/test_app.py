@@ -4,6 +4,8 @@ import unittest
 from webtest import TestApp
 
 from src.app import app
+from src.database.Database import Database
+from src.definition import TABLES
 from src.util.string import uid
 
 
@@ -92,6 +94,37 @@ class TestAppMethods(unittest.TestCase):
             })
         )
         self.assertEqual({'data': [1, 1]}, resp.json)
+
+    def test_api_post(self):
+        data = [uid(), uid(), uid()]
+
+        resp = self.app.post(
+            '/api/post',
+            content_type='application/json',
+            params=json.dumps({
+                'data': data
+            })
+        )
+        self.assertEqual('200 OK', resp.status)
+
+        resp = self.app.post(
+            '/api/exist',
+            content_type='application/json',
+            params=json.dumps({
+                'data': data
+            })
+        )
+        self.assertEqual({'data': [1, 1, 1]}, resp.json)
+
+
+class TESTDatabase(unittest.TestCase):
+    def setUp(self):
+        self.db = Database(TABLES.test)
+
+    def test_save_many(self):
+        data = [uid(), uid(), uid()]
+        self.assertEqual(True, self.db.save_many(data))
+        self.assertEqual([1, 1, 1], self.db.exist(data))
 
 
 if __name__ == '__main__':

@@ -26,16 +26,42 @@ class Database:
             conn.close()
             return True
 
+    def save_many(self, data):
+        conn, c = self._connect_db()
+        t_data = []
+        for d in data:
+            t_data.append((d,))
+
+        try:
+            c.executemany(f'INSERT INTO {self.table_name} VALUES(?)', t_data)
+        except sqlite3.IntegrityError:
+            conn.close()
+            return False
+        else:
+            conn.commit()
+            conn.close()
+            return True
+
     def exist(self, data):
         conn, c = self._connect_db()
 
         results = []
         for d in data:
-            res = c.execute(f'SELECT EXISTS (select * from {self.table_name} where data like ?);', (f'%{d}%',)).fetchone()
+            print(d)
+            res = c.execute(f'SELECT EXISTS (select * from {self.table_name} where data like ?);',
+                            (f'%{d}%',)).fetchone()
             results.append(res[0])
         conn.close()
 
         return results
+
+    def get_all_data(self):
+        conn, c = self._connect_db()
+
+        res = c.execute(f'select * from {self.table_name};').fetchall()
+        conn.close()
+
+        return res
 
     def delete(self):
         conn, c = self._connect_db()

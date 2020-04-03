@@ -40,6 +40,15 @@ def api_exist():
     return body
 
 
+@app.route("/api/post", method="POST")
+def api_post():
+    req = request.json
+    if req is None:
+        return False
+
+    db.save_many(req["data"])
+
+
 @app.hook("after_request")
 def enable_cors():
     response.headers["Access-Control-Allow-Origin"] = "*"
