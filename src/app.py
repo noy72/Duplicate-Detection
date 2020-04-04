@@ -64,4 +64,4 @@ def response_for_options(**kwargs):
 
 
 if __name__ == "__main__":
-    run(app, host="0.0.0.0", port=10070)
+    run(app, host="localhost", port=10000)
