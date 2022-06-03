@@ -1,6 +1,6 @@
 beautifulsoup4==4.8.1
 boddle==0.2.8
-bottle==0.12.18
+bottle==0.12.20
 psycopg2==2.8.4
 six==1.13.0
 soupsieve==1.9.5
